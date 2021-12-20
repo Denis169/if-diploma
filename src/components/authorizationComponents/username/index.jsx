@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const Input = styled.input`
+const Input = styled('input')`
   width: 100%;
   height: 44px;
   font-weight: 400;

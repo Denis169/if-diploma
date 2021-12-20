@@ -4,7 +4,7 @@ import {
   showRegistrationActionCreator,
   userBirthdateActionCreator,
   userEmailActionCreator,
-  userNameActionCreator, userPasswordActionCreator, usersDataActionCreator,
+  userNameActionCreator, userPasswordActionCreator, usersArrayActionCreator,
 } from '../actionCreators';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   userBirthdate: new Date(),
   userEmail: '',
   userPassword: '',
-  usersData: [],
+  usersArray: [],
 };
 
 const authorizationReducer = handleActions(
@@ -23,7 +23,7 @@ const authorizationReducer = handleActions(
     [userBirthdateActionCreator]: (state, { payload }) => ({ ...state, userBirthdate: payload }),
     [userEmailActionCreator]: (state, { payload }) => ({ ...state, userEmail: payload }),
     [userPasswordActionCreator]: (state, { payload }) => ({ ...state, userPassword: payload }),
-    [usersDataActionCreator]: (state, { payload }) => ({ ...state, usersData: state.usersData.push(payload) }),
+    [usersArrayActionCreator]: (state, { payload }) => ({ ...state, usersArray: [...state.usersArray, payload] }),
   },
   initialState,
 );

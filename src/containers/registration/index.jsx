@@ -11,7 +11,7 @@ import {
   userNameActionCreator,
   userBirthdateActionCreator,
   userEmailActionCreator,
-  userPasswordActionCreator, usersDataActionCreator,
+  userPasswordActionCreator, usersArrayActionCreator,
 } from '../../actionCreators';
 
 const RegistrationSection = styled.div`
@@ -68,7 +68,7 @@ const H2 = styled.h2`
   color: ${(props) => props.theme.black};
 `;
 
-const Button = styled.button`
+const Button = styled.input`
   width: 100%;
   height: 44px;
   background-color: ${(props) => props.theme.generalRed};
@@ -87,30 +87,31 @@ const Registration = () => {
   const userBirthdate = useSelector(createSelector((state) => state.authorisation.userBirthdate, (data) => data));
   const userEmail = useSelector(createSelector((state) => state.authorisation.userEmail, (data) => data));
   const userPassword = useSelector(createSelector((state) => state.authorisation.userPassword, (data) => data));
-  const usersData = useSelector(createSelector((state) => state.authorisation.usersData, (data) => data));
 
   const addUser = (event) => {
     event.preventDefault();
-    dispatch(usersDataActionCreator({
+
+    console.log(Object.fromEntries(new FormData(event.target).entries()));
+
+    dispatch(usersArrayActionCreator([{
       name: userName,
       birthdate: userBirthdate,
       email: userEmail,
       password: userPassword,
-    }));
+    }]));
     dispatch(showRegistrationActionCreator(false));
-    console.log(usersData);
   };
 
   return (
     <RegistrationSection>
-      <Form>
+      <Form onSubmit={addUser}>
         <Close onClick={() => dispatch(showRegistrationActionCreator(false))} />
         <H2>Welcome to Fox Library</H2>
         <Username value={userName} onChange={(event) => dispatch(userNameActionCreator(event.target.value))} />
         <Birthdate value={userBirthdate} onChange={(event) => dispatch(userBirthdateActionCreator(event.target.value))} />
         <Email value={userEmail} onChange={(event) => dispatch(userEmailActionCreator(event.target.value))} />
         <Password value={userPassword} onChange={(event) => dispatch(userPasswordActionCreator(event.target.value))} />
-        <Button onClick={addUser}>Sign up</Button>
+        <Button type="submit" value="Sign up" />
       </Form>
     </RegistrationSection>
   );
