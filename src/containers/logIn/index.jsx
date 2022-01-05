@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { Link } from 'react-router-dom';
 
 import Username from '../../components/authorizationComponents/username';
 import Password from '../../components/authorizationComponents/password';
+import CheckLogAndPas from '../../components/headerComponents/checkLogAndPas';
+
+import {
+  authorizationFlagActionCreator,
+  checkLogAndPassActionCreator,
+  showLogInActionCreator,
+  currentUserActionCreator, requestBookActionCreator,
+} from '../../actionCreators';
+import urlAllBooks from '../../constants/urlAllBooks';
 
 const RegistrationSection = styled.div`
   position: absolute;
@@ -23,7 +35,7 @@ const Form = styled.form`
   padding: 40px 32px 40px 32px;
 `;
 
-const Close = styled.div`
+const Close = styled(Link)`
   position: absolute;
   right: 20px;
   top: 20px;
@@ -58,7 +70,7 @@ const H2 = styled.h2`
   color: ${(props) => props.theme.black};
 `;
 
-const Button = styled.button`
+const Button = styled.input`
   width: 100%;
   height: 44px;
   background-color: ${(props) => props.theme.generalRed};
@@ -71,16 +83,52 @@ const Button = styled.button`
   color: ${(props) => props.theme.white};;
 `;
 
-const LogIn = () => (
-  <RegistrationSection>
-    <Form>
-      <Close />
-      <H2>Log In to Fox Library</H2>
-      <Username />
-      <Password />
-      <Button>Log in</Button>
-    </Form>
-  </RegistrationSection>
-);
+const LogIn = () => {
+  const dispatch = useDispatch();
+  const [userName, setUserName] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
+  const checkLogAndPass = useSelector(createSelector((state) => state.authorisation.checkLogAndPass, (data) => data));
+
+  const verification = (event) => {
+    event.preventDefault();
+    try {
+      const user = usersArray.find((item) => item.name === userName);
+      dispatch(currentUserActionCreator(user));
+      if (user.password === userPassword) {
+        dispatch(showLogInActionCreator(false));
+        dispatch(authorizationFlagActionCreator(true));
+        dispatch(requestBookActionCreator(urlAllBooks));
+      } else {
+        dispatch(checkLogAndPassActionCreator(true));
+      }
+    } catch (error) {
+      dispatch(checkLogAndPassActionCreator(true));
+    }
+  };
+
+  const changeUsername = (event) => {
+    setUserName(event.target.value);
+    dispatch(checkLogAndPassActionCreator(false));
+  };
+
+  const changePassword = (event) => {
+    setUserPassword(event.target.value);
+    dispatch(checkLogAndPassActionCreator(false));
+  };
+
+  return (
+    <RegistrationSection>
+      <Form onSubmit={verification}>
+        <Close to="/authorization" />
+        <H2>Log In to Fox Library</H2>
+        <Username value={userName} onChange={changeUsername} />
+        <Password value={userPassword} onChange={changePassword} />
+        {checkLogAndPass && <CheckLogAndPas />}
+        <Button type="submit" value="Log in" />
+      </Form>
+    </RegistrationSection>
+  );
+};
 
 export default LogIn;

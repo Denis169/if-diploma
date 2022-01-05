@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { NavLink } from 'react-router-dom';
+import { authorizationFlagActionCreator, toggleMenuActionCreator } from '../../../actionCreators';
 
 const Section = styled.div`
   position: absolute;
@@ -11,6 +15,7 @@ const Section = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   padding: 20px;
+  z-index: 2;
 `;
 
 const Name = styled.p`
@@ -21,7 +26,9 @@ const Name = styled.p`
   margin-bottom: 26px;
 `;
 
-const Settings = styled.p`
+const Settings = styled(NavLink)`
+  text-decoration: none;
+  display: block;
   position: relative;
   font-weight: 400;
   font-size: 16px;
@@ -55,15 +62,32 @@ const Button = styled.button`
   color: ${(props) => props.theme.generalRed};
   background-color: ${(props) => props.theme.white};
   margin: 0 auto;
+  cursor: pointer;
+  :active{
+    opacity: 0.7;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
 `;
 
-const UserMenu = () => (
-  <Section>
-    <Name>jamie</Name>
-    <Settings>Settings</Settings>
-    <MyOrders>My orders</MyOrders>
-    <Button>Log out</Button>
-  </Section>
-);
+const UserMenu = () => {
+  const dispatch = useDispatch();
+  const currentUser = useSelector(createSelector((state) => state.authorisation.currentUser, (data) => data));
+
+  const logOut = () => {
+    dispatch(authorizationFlagActionCreator(false));
+    dispatch(toggleMenuActionCreator(false));
+  };
+
+  const setActive = ({ isActive }) => ({ color: isActive ? '#FF5D4F' : '' });
+
+  return (
+    <Section>
+      <Name>{currentUser.name}</Name>
+      <Settings to="/settings" style={setActive}>Settings</Settings>
+      <MyOrders>My orders</MyOrders>
+      <Button onClick={logOut}>Log out</Button>
+    </Section>
+  );
+};
 
 export default UserMenu;

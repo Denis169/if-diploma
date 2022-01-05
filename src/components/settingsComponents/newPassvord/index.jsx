@@ -21,10 +21,10 @@ const P = styled.p`
   margin-top: 16px;
 `;
 
-const NewPassword = () => (
+const NewPassword = ({ value, onChange }) => (
   <>
     <P>New password</P>
-    <Input type="password" />
+    <Input type="password" value={value} onChange={onChange} />
   </>
 );
 

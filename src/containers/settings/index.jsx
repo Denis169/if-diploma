@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import styled from '@emotion/styled';
+
 import AvatarSVG from '../../components/settingsComponents/avatarSvg';
 import ChangeAvatarButton from '../../components/settingsComponents/changeAvatarButton';
 import Username from '../../components/authorizationComponents/username';
-import Birhdate from '../../components/authorizationComponents/birthdate';
 import Email from '../../components/authorizationComponents/email';
 import Password from '../../components/authorizationComponents/password';
 import NewPassword from '../../components/settingsComponents/newPassvord';
 import SaveButton from '../../components/settingsComponents/saveButton';
+import Birthdate from '../../components/authorizationComponents/birthdate';
+import SuccessfulChange from '../../components/settingsComponents/successfulСhange';
+
+import {
+  currentUserActionCreator,
+  successfulChangeActionCreator,
+  usersArrayActionCreator,
+} from '../../actionCreators';
 
 const SettingsSection = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -26,18 +36,73 @@ const H3 = styled.h3`
   text-align: center;
 `;
 
-const Settings = () => (
-  <SettingsSection>
-    <H3>Settings</H3>
-    <AvatarSVG />
-    <ChangeAvatarButton />
-    <Username />
-    <Birhdate />
-    <Email />
-    <Password />
-    <NewPassword />
-    <SaveButton />
-  </SettingsSection>
-);
+const Settings = () => {
+  const dispatch = useDispatch();
+  const [userName, setUserName] = useState('');
+  const [newBirthdate, setNewBirthdate] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
+  const currentUser = useSelector(createSelector((state) => state.authorisation.currentUser, (data) => data));
+  const successfulChange = useSelector(createSelector((state) => state.settings.successfulChange, (data) => data));
+
+  const changeUserData = () => {
+    if (currentUser.password === password) {
+      dispatch(usersArrayActionCreator(usersArray.map((item) => (item.name === currentUser.name
+        ? ({
+          ...item,
+          name: userName,
+          birthdate: newBirthdate,
+          email: newEmail,
+          password: newPassword,
+        })
+        : item))));
+    }
+    dispatch(currentUserActionCreator({
+      ...currentUser,
+      name: userName,
+      birthdate: newBirthdate,
+      email: newEmail,
+      password: newPassword,
+    }));
+    dispatch(successfulChangeActionCreator(true));
+  };
+
+  const changeUsername = (event) => {
+    setUserName(event.target.value);
+    successfulChange && dispatch(successfulChangeActionCreator(false));
+  };
+
+  const changeBirthdate = (event) => {
+    setNewBirthdate(event.target.value);
+    successfulChange && dispatch(successfulChangeActionCreator(false));
+  };
+
+  const changeEmail = (event) => {
+    setNewEmail(event.target.value);
+    successfulChange && dispatch(successfulChangeActionCreator(false));
+  };
+
+  const changePassword = (event) => {
+    setNewPassword(event.target.value);
+    successfulChange && dispatch(successfulChangeActionCreator(false));
+  };
+
+  return (
+    <SettingsSection>
+      <H3>Settings</H3>
+      <AvatarSVG />
+      <ChangeAvatarButton />
+      <Username value={userName} onChange={changeUsername} />
+      <Birthdate value={newBirthdate} onChange={changeBirthdate} />
+      <Email value={newEmail} onChange={changeEmail} />
+      <Password value={password} onChange={(event) => setPassword(event.target.value)} />
+      <NewPassword value={newPassword} onChange={changePassword} />
+      <SaveButton changeUserData={changeUserData} />
+      {successfulChange && <SuccessfulChange />}
+    </SettingsSection>
+  );
+};
 
 export default Settings;

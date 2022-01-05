@@ -6,10 +6,15 @@ import BookHolder from '../../components/bookComponents/bookHolder';
 import NameBook from '../../components/bookComponents/nameBook';
 import AuthorBook from '../../components/bookComponents/authorBook';
 import BookRate from '../../components/bookComponents/bookRate';
-import ButtonOrder from '../../components/bookComponents/buttonOrder';
+import TakenButton from '../../components/bookComponents/takenButton';
+import SmallButton from '../../components/bookComponents/smallButton';
 
 const Section = styled.div`
+  margin-top: 48px;
   display: flex;
+  justify-content: flex-start;
+  max-width: 256px;
+  width: 25%;
 `;
 
 const Information = styled.div`
@@ -20,16 +25,18 @@ const Information = styled.div`
   margin-left: 12px;
 `;
 
-const BookCard = () => (
+const BookCard = ({ image, author, name, rate, taken, bookHolder, button, id }) => (
   <Section>
-    <ImageBook />
+    <ImageBook image={image} />
     <Information>
-      <AvailableButton />
-      <BookHolder />
-      <NameBook />
-      <AuthorBook />
-      <BookRate />
-      <ButtonOrder />
+      {taken && <AvailableButton />}
+      {!taken && <TakenButton />}
+      {bookHolder && <BookHolder name={bookHolder} />}
+      <NameBook name={name} />
+      <AuthorBook author={author} />
+      <BookRate rate={rate} />
+      {!button && <SmallButton value="Order" id={id} />}
+      {button && <SmallButton value="Return" id={id} />}
     </Information>
   </Section>
 );

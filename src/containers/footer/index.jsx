@@ -11,7 +11,7 @@ const Background = styled.div`
 
 const FooterContainer = styled.div`
   max-width: 1232px;
-  margin: 0 auto;
+  margin: 80px auto;
   display: flex;
   padding: 40px 0;
   justify-content: space-between;

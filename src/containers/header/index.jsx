@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+
 import Logo from '../../components/headerComponents/logo';
 import Search from '../../components/headerComponents/search';
-import LogIn from '../../components/headerComponents/logIn';
-import SignUp from '../../components/headerComponents/signUp';
-import AllBooks from '../../components/headerComponents/allBooks';
-import YourOrders from '../../components/headerComponents/yourOrders';
 import ProFile from '../../components/headerComponents/proFileSvg';
 import ArrowSvg from '../../components/headerComponents/arrowSvg';
 import UserMenu from '../../components/headerComponents/userMenu';
+import CustomLink from '../../components/customLink';
 
 const HeaderComponent = styled.div`
   position: relative;
   display: flex;
-  padding: 30px 0 0 0;
+  padding: 30px 0 0 80px;
   align-items: center;
   justify-content: space-between;
 `;
@@ -25,27 +25,41 @@ const LogoSearch = styled.div`
 `;
 
 const PersonalData = styled.div`
+  width: ${(props) => props.width};
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  
 `;
 
-const Header = () => (
-  <HeaderComponent>
-    <LogoSearch>
-      <Logo />
-      <Search />
-    </LogoSearch>
-    <PersonalData>
-      <LogIn />
-      <SignUp />
-      {false && <AllBooks />}
-      {false && <YourOrders />}
-      {false && <ProFile />}
-      {false && <ArrowSvg />}
-      {false && <UserMenu />}
-    </PersonalData>
-  </HeaderComponent>
-);
+const UserAvatar = styled.div`
+  display: flex;
+`;
+
+const Header = () => {
+  const authorizationFlag = useSelector(createSelector((state) => state.authorisation.authorizationFlag, (data) => data));
+  const toggleSettingsFlag = useSelector(createSelector((state) => state.settings.toggleMenu, (data) => data));
+
+  return (
+    <HeaderComponent>
+      <LogoSearch>
+        <Logo />
+        {authorizationFlag && <Search />}
+      </LogoSearch>
+      <PersonalData width={authorizationFlag ? '25%' : '15%'}>
+        {!authorizationFlag && <CustomLink to="/authorization/logIn" child="Log in" />}
+        {!authorizationFlag && <CustomLink to="/authorization/signUp" child="Sign up" />}
+        {authorizationFlag && <CustomLink to="/" child="All books" />}
+        {authorizationFlag && <CustomLink to="/yourOrders" child="Your orders" />}
+        {authorizationFlag && (
+          <UserAvatar>
+            <ProFile />
+            <ArrowSvg />
+          </UserAvatar>
+        )}
+        {toggleSettingsFlag && <UserMenu />}
+      </PersonalData>
+    </HeaderComponent>
+  );
+};
 
 export default Header;

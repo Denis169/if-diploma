@@ -12,11 +12,15 @@ const Button = styled.button`
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
-  color: ${(props) => props.theme.white};;
+  color: ${(props) => props.theme.white};
+  :active{
+    opacity: 0.7;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
 `;
 
-const SaveButton = () => (
-  <Button>Save</Button>
+const SaveButton = ({ changeUserData }) => (
+  <Button onClick={changeUserData}>Save</Button>
 );
 
 export default SaveButton;

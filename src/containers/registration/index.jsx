@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { createSelector } from 'reselect';
 import Username from '../../components/authorizationComponents/username';
 import Birthdate from '../../components/authorizationComponents/birthdate';
 import Email from '../../components/authorizationComponents/email';
 import Password from '../../components/authorizationComponents/password';
 import {
-  showRegistrationActionCreator,
-  userNameActionCreator,
-  userBirthdateActionCreator,
-  userEmailActionCreator,
-  userPasswordActionCreator, usersArrayActionCreator,
+  showLogInActionCreator,
+  showRegistrationActionCreator, usersArrayActionCreator,
 } from '../../actionCreators';
 
 const RegistrationSection = styled.div`
@@ -33,7 +32,7 @@ const Form = styled.form`
   padding: 40px 32px 40px 32px;
 `;
 
-const Close = styled.div`
+const Close = styled(Link)`
   position: absolute;
   right: 20px;
   top: 20px;
@@ -83,34 +82,42 @@ const Button = styled.input`
 
 const Registration = () => {
   const dispatch = useDispatch();
-  const userName = useSelector(createSelector((state) => state.authorisation.userName, (data) => data));
-  const userBirthdate = useSelector(createSelector((state) => state.authorisation.userBirthdate, (data) => data));
-  const userEmail = useSelector(createSelector((state) => state.authorisation.userEmail, (data) => data));
-  const userPassword = useSelector(createSelector((state) => state.authorisation.userPassword, (data) => data));
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState('');
+  const [userBirthdate, setUserBirthdate] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
 
   const addUser = (event) => {
     event.preventDefault();
-
-    console.log(Object.fromEntries(new FormData(event.target).entries()));
-
-    dispatch(usersArrayActionCreator([{
-      name: userName,
-      birthdate: userBirthdate,
-      email: userEmail,
-      password: userPassword,
-    }]));
-    dispatch(showRegistrationActionCreator(false));
+    /* eslint-disable */
+    const re = /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i;
+    if (re.test(userEmail) && userName && userBirthdate && userPassword) {
+      dispatch(usersArrayActionCreator([ ...usersArray, {
+        name: userName,
+        birthdate: userBirthdate,
+        email: userEmail,
+        password: userPassword,
+        books: [],
+      }]))
+      dispatch(showRegistrationActionCreator(false));
+      dispatch(showLogInActionCreator(true));
+      navigate("/authorization/logIn");
+    } else {
+      alert('check your data');
+    }
   };
 
   return (
     <RegistrationSection>
       <Form onSubmit={addUser}>
-        <Close onClick={() => dispatch(showRegistrationActionCreator(false))} />
+        <Close to="/authorization" />
         <H2>Welcome to Fox Library</H2>
-        <Username value={userName} onChange={(event) => dispatch(userNameActionCreator(event.target.value))} />
-        <Birthdate value={userBirthdate} onChange={(event) => dispatch(userBirthdateActionCreator(event.target.value))} />
-        <Email value={userEmail} onChange={(event) => dispatch(userEmailActionCreator(event.target.value))} />
-        <Password value={userPassword} onChange={(event) => dispatch(userPasswordActionCreator(event.target.value))} />
+        <Username value={userName} onChange={(event) => setUserName(event.target.value)} />
+        <Birthdate value={userBirthdate} onChange={(event) => setUserBirthdate(event.target.value)} />
+        <Email value={userEmail} onChange={(event) => setUserEmail(event.target.value)} />
+        <Password value={userPassword} onChange={(event) => setUserPassword(event.target.value)} />
         <Button type="submit" value="Sign up" />
       </Form>
     </RegistrationSection>

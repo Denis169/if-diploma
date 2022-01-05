@@ -5,17 +5,14 @@ import StarOffSvg from '../StarOffSvg';
 
 const Rate = styled.div`
   display: flex;
-    justify-content: space-between;
+  justify-content: space-between;
   width: 122px;
 `;
 
-const BookRate = () => (
+const BookRate = ({ rate }) => (
   <Rate>
-    <StarOnSvg />
-    <StarOnSvg />
-    <StarOnSvg />
-    <StarOffSvg />
-    <StarOffSvg />
+    { [...Array(rate)].map((item, index) => <StarOnSvg key={index.toString()} />) }
+    { [...Array(5 - rate)].map((item, index) => <StarOffSvg key={index.toString()} />) }
   </Rate>
 );
 

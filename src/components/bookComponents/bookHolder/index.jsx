@@ -8,8 +8,12 @@ const P = styled.p`
   color: ${(props) => props.theme.gray};
 `;
 
-const BookHolder = () => (
-  <P>Bookholder: cris11</P>
+const BookHolder = ({ name }) => (
+  <P>
+    Bookholder:
+    {' '}
+    {name}
+  </P>
 );
 
 export default BookHolder;

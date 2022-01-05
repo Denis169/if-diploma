@@ -9,8 +9,12 @@ const P = styled.p`
   color: ${(props) => props.theme.gray};
 `;
 
-const AuthorBook = () => (
-  <P>by Nathaniel Popper</P>
+const AuthorBook = ({ author }) => (
+  <P>
+    by
+    {' '}
+    {author}
+  </P>
 );
 
 export default AuthorBook;

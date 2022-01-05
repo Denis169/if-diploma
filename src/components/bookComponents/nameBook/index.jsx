@@ -9,8 +9,12 @@ const H3 = styled.h3`
   min-height: 38px;
 `;
 
-const NameBook = () => (
-  <H3>Digital Gold </H3>
-);
+const NameBook = ({ name }) => {
+  const newName = name.indexOf(':') > -1 ? name.slice(0, name.indexOf(':')) : name;
+
+  return (
+    <H3>{newName}</H3>
+  );
+};
 
 export default NameBook;

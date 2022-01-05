@@ -1,0 +1,2 @@
+export const REQUEST_ALL_BOOKS = 'REQUEST_ALL_BOOKS';
+export const DATA_ALL_BOOKS = 'DATA_ALL_BOOKS';

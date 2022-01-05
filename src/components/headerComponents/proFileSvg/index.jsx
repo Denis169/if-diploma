@@ -5,8 +5,6 @@ const Icon = styled.svg`
   display: block;
   width: 36px;
   height: 36px;
-  margin-left: 48px;
-  cursor: pointer;
 `;
 
 const ProFile = () => (
