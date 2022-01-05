@@ -89,6 +89,20 @@ const AllBooks = () => {
     }
   };
 
+  const bookHolder = (book) => {
+    let user = { name: '', time: Date.now() };
+    const usersArrayWithBook = usersArray.filter((item) => item.books.findIndex((one) => one.id === book.id) !== -1);
+    if (usersArrayWithBook.length === 0) return user.name;
+    usersArrayWithBook.forEach((item) => {
+      if (item.books.find((one) => one.id === book.id).time < user.time) {
+        user = { name: item.name, time: item.books.find((one) => one.id === book.id).time };
+      }
+    });
+    return user.name;
+  };
+
+  const taken = (book) => usersArray.filter((item) => item.books.findIndex((one) => one.id === book.id) !== -1).length === 0;
+
   return (
     <Section height={heightSection}>
       <H3>All books</H3>
@@ -96,8 +110,8 @@ const AllBooks = () => {
         {dataAllBooks.map((book) => (
           <BookCard
             button={currentUser.books.findIndex((item) => item.id === book.id) !== -1}
-            bookHolder="ddd"
-            taken
+            bookHolder={bookHolder(book)}
+            taken={taken(book)}
             rate={book.rate}
             image={book.imageUrl}
             author={book.author}
