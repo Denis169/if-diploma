@@ -5,6 +5,7 @@ import authorizationReducer from './authorizationReduser';
 import allBooksReducer from './allBooksReduser';
 import settingsReducer from './settingsReduser';
 import yourOrdersReducer from './yourOrdersReduser';
+import searchReducer from './search';
 
 const persistConfig = {
   key: 'root',
@@ -17,6 +18,7 @@ const reducers = combineReducers({
   allBooks: allBooksReducer,
   settings: settingsReducer,
   yourOrders: yourOrdersReducer,
+  search: searchReducer,
 });
 
 const persistedReducers = persistReducer(persistConfig, reducers);

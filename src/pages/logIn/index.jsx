@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Username from '../../components/authorizationComponents/username';
 import Password from '../../components/authorizationComponents/password';
 import CheckLogAndPas from '../../components/headerComponents/checkLogAndPas';
+import useAuth from '../../hook/useAuth';
 
 import {
   authorizationFlagActionCreator,
@@ -85,10 +86,12 @@ const Button = styled.input`
 
 const LogIn = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
   const checkLogAndPass = useSelector(createSelector((state) => state.authorisation.checkLogAndPass, (data) => data));
+  const { signIn } = useAuth();
 
   const verification = (event) => {
     event.preventDefault();
@@ -96,6 +99,7 @@ const LogIn = () => {
       const user = usersArray.find((item) => item.name === userName);
       dispatch(currentUserActionCreator(user));
       if (user.password === userPassword) {
+        signIn(user, () => navigate('/', { replace: true }));
         dispatch(showLogInActionCreator(false));
         dispatch(authorizationFlagActionCreator(true));
         dispatch(requestBookActionCreator(urlAllBooks));

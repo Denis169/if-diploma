@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import BookCard from '../../../containers/BookCard';
+import BookCard from '../../../pages/BookCard';
 import { usersArrayActionCreator } from '../../../actionCreators';
 
 const Section = styled.div`
   overflow: hidden;
   height: ${(props) => props.height}px;
-  transition-duration: 1s;
   background-color: ${(props) => props.theme.white};
+  transition-duration: 1s;
   padding: 26px 32px;
   border-radius: 8px;
   margin-top: 40px;
@@ -109,7 +109,7 @@ const AllBooks = () => {
       <Books>
         {dataAllBooks.map((book) => (
           <BookCard
-            button={currentUser.books.findIndex((item) => item.id === book.id) !== -1}
+            button={currentUser.books.findIndex((item) => item.id === book.id) === -1}
             bookHolder={bookHolder(book)}
             taken={taken(book)}
             rate={book.rate}

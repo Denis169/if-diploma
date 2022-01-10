@@ -15,6 +15,7 @@ const Section = styled.div`
   justify-content: flex-start;
   max-width: 256px;
   width: 25%;
+  min-height: 185px;
 `;
 
 const Information = styled.div`
@@ -27,7 +28,7 @@ const Information = styled.div`
 
 const BookCard = ({ image, author, name, rate, taken, bookHolder, button, id }) => (
   <Section>
-    <ImageBook image={image} />
+    <ImageBook image={image} id={id} />
     <Information>
       {taken && <AvailableButton />}
       {!taken && <TakenButton />}
@@ -35,8 +36,7 @@ const BookCard = ({ image, author, name, rate, taken, bookHolder, button, id }) 
       <NameBook name={name} />
       <AuthorBook author={author} />
       <BookRate rate={rate} />
-      {!button && <SmallButton value="Order" id={id} />}
-      {button && <SmallButton value="Return" id={id} />}
+      <SmallButton value={button ? 'Order' : 'Return'} id={id} />
     </Information>
   </Section>
 );

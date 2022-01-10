@@ -12,12 +12,12 @@ const Section = styled.div`
   justify-content: space-between;
   width: 12.5%;
   max-width: 122px;
-  height: 300px;
+  min-height: 300px;
 `;
 
 const BookCardYourOrders = ({ image, author, name, rate, value, id }) => (
   <Section>
-    <ImageBook image={image} />
+    <ImageBook image={image} id={id} />
     <NameAndAuthor name={name} author={author} />
     <BookRate rate={rate} />
     <SmallButton value={value} id={id} />

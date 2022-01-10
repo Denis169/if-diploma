@@ -2,7 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+import useAuth from '../../../hook/useAuth';
+
 import { authorizationFlagActionCreator, toggleMenuActionCreator } from '../../../actionCreators';
 
 const Section = styled.div`
@@ -71,11 +74,14 @@ const Button = styled.button`
 
 const UserMenu = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const currentUser = useSelector(createSelector((state) => state.authorisation.currentUser, (data) => data));
+  const { signOut } = useAuth();
 
   const logOut = () => {
     dispatch(authorizationFlagActionCreator(false));
     dispatch(toggleMenuActionCreator(false));
+    signOut(null, () => navigate('/authorization', { replace: true }));
   };
 
   const setActive = ({ isActive }) => ({ color: isActive ? '#FF5D4F' : '' });

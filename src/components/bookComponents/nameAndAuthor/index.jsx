@@ -17,6 +17,7 @@ const NameAndAuthor = ({ name, author }) => {
       {newName}
       {' '}
       by
+      {' '}
       {author}
     </P>
   );

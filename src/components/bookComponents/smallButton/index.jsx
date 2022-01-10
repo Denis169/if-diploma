@@ -6,6 +6,7 @@ import { currentUserActionCreator } from '../../../actionCreators';
 
 const Button = styled.button`
   width: 100%;
+  max-width: 185px;
   height: 32px;
   background-color: ${(props) => props.theme.secondaryGrey};
   border-radius: 8px;

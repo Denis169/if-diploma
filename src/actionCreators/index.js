@@ -12,6 +12,7 @@ import {
 import { DATA_ALL_BOOKS, REQUEST_ALL_BOOKS } from '../constants/allBooksConst';
 import { SUCCESSFUL_CHANGE, TOGGLE_MENU } from '../constants/settingsConst';
 import { ARE_THERE_ANY_BOOKS, ARE_THERE_LIST_YOUR_BOOKS } from '../constants/yourOrders';
+import { SEARCH } from '../constants/searchConst';
 
 // Authorization
 
@@ -36,3 +37,7 @@ export const areThereListYourBooksActionCreator = createAction(ARE_THERE_LIST_YO
 
 export const toggleMenuActionCreator = createAction(TOGGLE_MENU);
 export const successfulChangeActionCreator = createAction(SUCCESSFUL_CHANGE);
+
+// Search
+
+export const searchActionCreator = createAction(SEARCH);

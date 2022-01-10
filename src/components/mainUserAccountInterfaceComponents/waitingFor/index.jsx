@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import BookCardYourOrders from '../../../containers/BookCardYourOrders';
+import BookCardYourOrders from '../../../pages/BookCardYourOrders';
 
 const Section = styled.div`
   position: relative;
@@ -65,6 +65,7 @@ const WaitingFor = () => {
               author={book.author}
               name={book.name}
               key={book.id}
+              id={book.id}
               value="Check status"
             />
           )
