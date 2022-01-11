@@ -4,19 +4,18 @@ import { ThemeProvider } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { colorsTheme } from '../../constants/style.varible';
-import Authorization from '../authorization';
-import MainUserAccountInterface from '../mainUserAccountInterface';
-import AllBooks from '../../components/mainUserAccountInterfaceComponents/allBooks';
-import WaitingFor from '../../components/mainUserAccountInterfaceComponents/waitingFor';
-import ListYourBook from '../../components/mainUserAccountInterfaceComponents/listYourBook';
-import Settings from '../settings';
-import LogIn from '../logIn';
-import Registration from '../registration';
-import BookPreview from '../../components/mainUserAccountInterfaceComponents/bookPreview';
-import { AuthProvider } from '../../hoc/authAuthorization';
-import RequireAuth from '../../hoc/requireAuth';
-import RequireAuthLogin from '../../hoc/requareAufLogin';
+import { colorsTheme } from '../../assets/style.varible';
+import Authorization from '../Authorization';
+import MainUserAccountInterface from '../MainUserAccountInterface';
+import AllBooks from '../../components/MainUserAccountInterfaceComponents/AllBooks';
+import Settings from '../Settings';
+import LogIn from '../LogIn';
+import Registration from '../Registration';
+import BookPreview from '../../components/MainUserAccountInterfaceComponents/BookPreview';
+import { AuthProvider } from '../../hoc/AuthAuthorization';
+import RequireAuth from '../../hoc/RequireAuth';
+import RequireAuthLogin from '../../hoc/RequareAufLogin';
+import YourOrders from '../../components/MainUserAccountInterfaceComponents/YourOrders';
 
 function App() {
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ function App() {
 
   useEffect(() => {
     if (!authorizationFlag) {
-      navigate('/authorization', { replace: true });
+      navigate('/Authorization', { replace: true });
     } else {
       navigate('/', { replace: true });
     }
@@ -45,26 +44,13 @@ function App() {
             <Route path="/authorization/logIn" element={<LogIn />} />
             <Route path="/authorization/signUp" element={<Registration />} />
           </Route>
-          <Route path="/" element={<MainUserAccountInterface />}>
-            <Route
-              index
-              element={(
-                <RequireAuth>
-                  <AllBooks />
-                </RequireAuth>
-            )}
-            />
-            <Route path="/book/:bookId" element={<BookPreview />} />
-            <Route
-              path="/yourOrders"
-              element={(
-                <>
-                  <WaitingFor />
-                  <ListYourBook />
-                </>
-              )}
-            />
-            <Route path="/settings" element={<Settings />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/" element={<MainUserAccountInterface />}>
+              <Route index element={<AllBooks />} />
+              <Route path="/book/:bookId" element={<BookPreview />} />
+              <Route path="/yourOrders" element={<YourOrders />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
           </Route>
         </Routes>
       </AuthProvider>

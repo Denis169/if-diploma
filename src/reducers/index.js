@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import authorizationReducer from './authorizationReduser';
-import allBooksReducer from './allBooksReduser';
-import settingsReducer from './settingsReduser';
-import yourOrdersReducer from './yourOrdersReduser';
-import searchReducer from './search';
+import authorizationReducer from './AuthorizationReduser';
+import allBooksReducer from './AllBooksReduser';
+import settingsReducer from './SettingsReduser';
+import yourOrdersReducer from './YourOrdersReduser';
+import searchReducer from './SearchReduser';
 
 const persistConfig = {
   key: 'root',

@@ -7,12 +7,12 @@ import {
   SHOW_LOG_IN,
   SHOW_REGISTRATION,
   USERS_ARRAY,
-} from '../constants/autorizationConst';
+} from '../constants/AutorizationConst';
 
-import { DATA_ALL_BOOKS, REQUEST_ALL_BOOKS } from '../constants/allBooksConst';
-import { SUCCESSFUL_CHANGE, TOGGLE_MENU } from '../constants/settingsConst';
-import { ARE_THERE_ANY_BOOKS, ARE_THERE_LIST_YOUR_BOOKS } from '../constants/yourOrders';
-import { SEARCH } from '../constants/searchConst';
+import { DATA_ALL_BOOKS, REQUEST_ALL_BOOKS } from '../constants/AllBooksConst';
+import { SUCCESSFUL_CHANGE, TOGGLE_MENU } from '../constants/SettingsConst';
+import { ARE_THERE_ANY_BOOKS, ARE_THERE_LIST_YOUR_BOOKS } from '../constants/YourOrders';
+import { SEARCH } from '../constants/SearchConst';
 
 // Authorization
 
