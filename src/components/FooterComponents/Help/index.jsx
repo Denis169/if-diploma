@@ -39,10 +39,10 @@ const Help = () => {
   const randomBook = () => dispatch(usersArrayActionCreator(usersArray.map((item) => ({
     ...item,
     books: dataAllBooks.reduce((accum, book) => {
-      if (Math.random() < 0.4) {
+      if (Math.random() < 0.5) {
         accum.push({
           id: book.id,
-          time: Date.now(),
+          time: Date.now() - (Math.random() * 1000),
         });
       }
       return accum;
