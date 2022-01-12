@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import { usersArrayActionCreator } from '../../../actionCreators';
 
 const Section = styled.div`
   display: flex;
@@ -28,12 +31,31 @@ const Reference = styled.p`
   margin-bottom: 8px;
 `;
 
-const Help = () => (
-  <Section>
-    <H3>Help</H3>
-    <Reference>Help center</Reference>
-    <Reference>FAQs</Reference>
-  </Section>
-);
+const Help = () => {
+  const dispatch = useDispatch();
+  const dataAllBooks = useSelector(createSelector((state) => state.allBooks.dataAllBooks, (data) => data));
+  const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
+
+  const randomBook = () => dispatch(usersArrayActionCreator(usersArray.map((item) => ({
+    ...item,
+    books: dataAllBooks.reduce((accum, book) => {
+      if (Math.random() < 0.4) {
+        accum.push({
+          id: book.id,
+          time: Date.now(),
+        });
+      }
+      return accum;
+    }, []),
+  }))));
+
+  return (
+    <Section>
+      <H3>Help</H3>
+      <Reference onClick={randomBook}>Help center</Reference>
+      <Reference>FAQs</Reference>
+    </Section>
+  );
+};
 
 export default Help;

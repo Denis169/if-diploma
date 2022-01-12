@@ -65,21 +65,9 @@ const AllBooks = () => {
   const [heightSection, setHeightSection] = useState(390);
   const currentUser = useSelector(createSelector((state) => state.authorisation.currentUser, (data) => data));
 
-  // const randomBook = () => dataAllBooks.map((item) => ({
-  //   ...item,
-  //   users: usersArray.reduce((accum, user) => {
-  //     if (Math.random() < 0.5) {
-  //       accum.push({
-  //         name: user.name,
-  //         time: new Date(),
-  //       });
-  //     }
-  //     return accum;
-  //   }, []),
-  // }));
-
   useEffect(() => {
     dispatch(usersArrayActionCreator(usersArray.map((user) => (user.name === currentUser.name ? currentUser : user))));
+    console.log(currentUser);
   }, [currentUser]);
 
   const showMore = () => {
