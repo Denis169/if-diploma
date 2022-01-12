@@ -67,7 +67,6 @@ const AllBooks = () => {
 
   useEffect(() => {
     dispatch(usersArrayActionCreator(usersArray.map((user) => (user.name === currentUser.name ? currentUser : user))));
-    console.log(currentUser);
   }, [currentUser]);
 
   const showMore = () => {
