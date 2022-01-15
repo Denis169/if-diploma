@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { persistStore } from 'redux-persist';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import middleware, { sagaMiddleware } from './middleware';
+import middleware, { sagaMiddleware } from './middleware/SagaMiddleware';
 import reducers from './reducers';
 import rootSaga from './sagas';
 
