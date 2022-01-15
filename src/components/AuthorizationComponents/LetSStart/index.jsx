@@ -55,7 +55,7 @@ const LetSStart = () => (
   <LetStart>
     <H3>Build your library</H3>
     <P>Over 400.000 books from fiction to the business literature</P>
-    <Button to="/authorization/signUp">Let&acute;s Start</Button>
+    <Button to="/authorization/sign-up">Let&acute;s Start</Button>
   </LetStart>
 );
 

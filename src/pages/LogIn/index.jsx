@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import Username from '../../components/AuthorizationComponents/UserName';
 import Password from '../../components/AuthorizationComponents/Password';
-import CheckLogAndPas from '../../components/HeaderComponents/CheckLogAndPas';
+import CheckLogPasEmail from '../../components/HeaderComponents/CheckLogPasEmail';
 import useAuth from '../../hook/useAuth';
 
 import {
@@ -90,24 +90,24 @@ const LogIn = () => {
   const { signIn } = useAuth();
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [checkLogAndPass, setCheckLogAndPass] = useState(false);
   const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
-  const checkLogAndPass = useSelector(createSelector((state) => state.authorisation.checkLogAndPass, (data) => data));
 
   const verification = (event) => {
     event.preventDefault();
     try {
       const user = usersArray.find((item) => item.name === userName);
-      dispatch(currentUserActionCreator(user));
       if (user.password === userPassword) {
+        dispatch(currentUserActionCreator(user));
         signIn(user, () => navigate('/', { replace: true }));
         dispatch(showLogInActionCreator(false));
         dispatch(authorizationFlagActionCreator(true));
         dispatch(requestBookActionCreator(urlAllBooks));
       } else {
-        dispatch(checkLogAndPassActionCreator(true));
+        setCheckLogAndPass(true);
       }
     } catch (error) {
-      dispatch(checkLogAndPassActionCreator(true));
+      setCheckLogAndPass(true);
     }
   };
 
@@ -128,7 +128,7 @@ const LogIn = () => {
         <H2>Log In to Fox Library</H2>
         <Username value={userName} onChange={changeUsername} />
         <Password value={userPassword} onChange={changePassword} />
-        {checkLogAndPass && <CheckLogAndPas />}
+        {checkLogAndPass && <CheckLogPasEmail value="Check your login and password" />}
         <Button type="submit" value="Log in" />
       </Form>
     </RegistrationSection>

@@ -9,7 +9,10 @@ import Footer from '../Footer';
 
 const Background = styled.div`
   background-color: ${(props) => props.theme.background};
-  padding: 0 0 80px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const MainUserAccountInterface = () => (

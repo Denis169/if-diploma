@@ -11,10 +11,10 @@ const P = styled.p`
   color: ${(props) => props.theme.generalRed};
 `;
 
-const CheckLogAndPas = () => (
+const CheckLogPasEmail = ({ value }) => (
   <>
-    <P>Check your login and password</P>
+    <P>{value}</P>
   </>
 );
 
-export default CheckLogAndPas;
+export default CheckLogPasEmail;

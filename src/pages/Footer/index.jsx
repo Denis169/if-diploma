@@ -11,13 +11,12 @@ const Background = styled.div`
 
 const FooterContainer = styled.div`
   max-width: 1232px;
-  margin: 80px auto;
+  margin: 30px auto;
   display: flex;
   flex-wrap: wrap;
   padding: 40px 1vw;
   justify-content: space-between;
   @media (max-width: 900px) {
-    margin: 40px auto;
     padding: 20px 1vw;
     justify-content: space-around;
   }

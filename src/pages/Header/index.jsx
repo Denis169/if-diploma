@@ -56,10 +56,10 @@ const Header = () => {
         {authorizationFlag && <Search />}
       </LogoSearch>
       <PersonalData width={authorizationFlag ? '25%' : '15%'}>
-        {!authorizationFlag && <CustomLink to="/authorization/logIn" child="Log in" />}
-        {!authorizationFlag && <CustomLink to="/authorization/signUp" child="Sign up" />}
+        {!authorizationFlag && <CustomLink to="/authorization/log-in" child="Log in" />}
+        {!authorizationFlag && <CustomLink to="/authorization/sign-up" child="Sign up" />}
         {authorizationFlag && <CustomLink to="/" child="All books" />}
-        {authorizationFlag && <CustomLink to="/yourOrders" child="Your orders" />}
+        {authorizationFlag && <CustomLink to="/your-orders" child="Your orders" />}
         {authorizationFlag && (
           <UserAvatar>
             <ProFile />

@@ -86,7 +86,7 @@ const UserMenu = () => {
   const logOut = () => {
     dispatch(authorizationFlagActionCreator(false));
     dispatch(toggleMenuActionCreator(false));
-    signOut(null, () => navigate('/Authorization', { replace: true }));
+    signOut(null, () => navigate('/authorization', { replace: true }));
   };
 
   const setActive = ({ isActive }) => ({ color: isActive ? '#FF5D4F' : '' });
@@ -95,7 +95,7 @@ const UserMenu = () => {
     <Section>
       <Name>{currentUser.name}</Name>
       <Settings to="/settings" style={setActive}>Settings</Settings>
-      <MyOrders to="/yourOrders">My orders</MyOrders>
+      <MyOrders to="/your-orders">My orders</MyOrders>
       <Button onClick={logOut}>Log out</Button>
     </Section>
   );

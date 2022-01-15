@@ -12,12 +12,11 @@ import NewPassword from '../../components/SettingsComponents/NewPassvord';
 import SaveButton from '../../components/SettingsComponents/SaveButton';
 import Birthdate from '../../components/AuthorizationComponents/Birthdate';
 import SuccessfulChange from '../../components/SettingsComponents/SuccessfulСhange';
+import CheckLogPasEmail from '../../components/HeaderComponents/CheckLogPasEmail';
 
-import {
-  currentUserActionCreator,
-  successfulChangeActionCreator,
-  usersArrayActionCreator,
-} from '../../actionCreators';
+import { currentUserActionCreator, usersArrayActionCreator } from '../../actionCreators';
+
+import regularForEmail from '../../assets/CheckRegularEmail';
 
 const SettingsSection = styled.div`
   background-color: ${(props) => props.theme.white};
@@ -43,50 +42,76 @@ const Settings = () => {
   const [newEmail, setNewEmail] = useState('');
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [successfulChange, setSuccessfulChange] = useState(false);
+  const [checkingOfCompletedData, setCheckingOfCompletedData] = useState(false);
+  const [valueMessage, setValueMessage] = useState('');
   const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
   const currentUser = useSelector(createSelector((state) => state.authorisation.currentUser, (data) => data));
-  const successfulChange = useSelector(createSelector((state) => state.settings.successfulChange, (data) => data));
 
   const changeUserData = () => {
-    if (currentUser.password === password) {
-      dispatch(usersArrayActionCreator(usersArray.map((item) => (item.name === currentUser.name
-        ? ({
-          ...item,
-          name: userName,
-          birthdate: newBirthdate,
-          email: newEmail,
-          password: newPassword,
-        })
-        : item))));
+    if (userName) {
+      if (newBirthdate) {
+        if (newEmail && regularForEmail.test(newEmail)) {
+          if (newPassword) {
+            if (currentUser.password === password) {
+              dispatch(usersArrayActionCreator(usersArray.map((item) => (item.name === currentUser.name
+                ? ({
+                  ...item,
+                  name: userName,
+                  birthdate: newBirthdate,
+                  email: newEmail,
+                  password: newPassword,
+                })
+                : item))));
+              dispatch(currentUserActionCreator({
+                ...currentUser,
+                name: userName,
+                birthdate: newBirthdate,
+                email: newEmail,
+                password: newPassword,
+              }));
+              setCheckingOfCompletedData(false);
+              setSuccessfulChange(true);
+            } else {
+              setCheckingOfCompletedData(true);
+              setValueMessage('Incorrect Password');
+            }
+          } else {
+            setCheckingOfCompletedData(true);
+            setValueMessage('Check New Password');
+          }
+        } else {
+          setCheckingOfCompletedData(true);
+          setValueMessage('Check Email');
+        }
+      } else {
+        setCheckingOfCompletedData(true);
+        setValueMessage('Check Birthdate');
+      }
+    } else {
+      setCheckingOfCompletedData(true);
+      setValueMessage('Check Username');
     }
-    dispatch(currentUserActionCreator({
-      ...currentUser,
-      name: userName,
-      birthdate: newBirthdate,
-      email: newEmail,
-      password: newPassword,
-    }));
-    dispatch(successfulChangeActionCreator(true));
   };
 
   const changeUsername = (event) => {
     setUserName(event.target.value);
-    successfulChange && dispatch(successfulChangeActionCreator(false));
+    setSuccessfulChange(false);
   };
 
   const changeBirthdate = (event) => {
     setNewBirthdate(event.target.value);
-    successfulChange && dispatch(successfulChangeActionCreator(false));
+    setSuccessfulChange(false);
   };
 
   const changeEmail = (event) => {
     setNewEmail(event.target.value);
-    successfulChange && dispatch(successfulChangeActionCreator(false));
+    setSuccessfulChange(false);
   };
 
   const changePassword = (event) => {
     setNewPassword(event.target.value);
-    successfulChange && dispatch(successfulChangeActionCreator(false));
+    setSuccessfulChange(false);
   };
 
   return (
@@ -101,6 +126,7 @@ const Settings = () => {
       <NewPassword value={newPassword} onChange={changePassword} />
       <SaveButton changeUserData={changeUserData} />
       {successfulChange && <SuccessfulChange />}
+      {checkingOfCompletedData && <CheckLogPasEmail value={valueMessage} />}
     </SettingsSection>
   );
 };

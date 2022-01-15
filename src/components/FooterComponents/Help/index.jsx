@@ -36,18 +36,20 @@ const Help = () => {
   const dataAllBooks = useSelector(createSelector((state) => state.allBooks.dataAllBooks, (data) => data));
   const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
 
-  const randomBook = () => dispatch(usersArrayActionCreator(usersArray.map((item) => ({
-    ...item,
-    books: dataAllBooks.reduce((accum, book) => {
-      if (Math.random() < 0.5) {
-        accum.push({
-          id: book.id,
-          time: Date.now() - (Math.random() * 1000),
-        });
-      }
-      return accum;
-    }, []),
-  }))));
+  const randomBook = () => {
+    dispatch(usersArrayActionCreator(usersArray.map((item) => ({
+      ...item,
+      books: dataAllBooks.reduce((accum, book) => {
+        if (Math.random() < 0.5) {
+          accum.push({
+            id: book.id,
+            time: Date.now() - (Math.random() * 1000),
+          });
+        }
+        return accum;
+      }, []),
+    }))));
+  };
 
   return (
     <Section>

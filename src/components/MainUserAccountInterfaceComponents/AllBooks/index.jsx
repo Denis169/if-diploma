@@ -72,10 +72,12 @@ const AllBooks = () => {
   const showMore = () => {
     if (heightSection < ref.current.clientHeight) {
       setHeightSection(heightSection + 236);
+    } else if (heightSection >= ref.current.clientHeight) {
+      setHeightSection(390);
     }
   };
 
-  const bookHolder = (book) => {
+  const getBookHolder = (book) => {
     let user = { name: '', time: Date.now() };
     const usersArrayWithBook = usersArray.filter((item) => item.books.findIndex((one) => one.id === book.id) !== -1);
     if (usersArrayWithBook.length === 0) return user.name;
@@ -96,7 +98,7 @@ const AllBooks = () => {
         {dataAllBooks.map((book) => (
           <BookCard
             button={currentUser.books.findIndex((item) => item.id === book.id) === -1}
-            bookHolder={bookHolder(book)}
+            bookHolder={getBookHolder(book)}
             taken={taken(book)}
             rate={book.rate}
             image={book.imageUrl}

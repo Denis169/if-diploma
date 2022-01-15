@@ -8,10 +8,14 @@ import Username from '../../components/AuthorizationComponents/UserName';
 import Birthdate from '../../components/AuthorizationComponents/Birthdate';
 import Email from '../../components/AuthorizationComponents/Email';
 import Password from '../../components/AuthorizationComponents/Password';
+import CheckLogPasEmail from '../../components/HeaderComponents/CheckLogPasEmail';
+
 import {
   showLogInActionCreator,
   showRegistrationActionCreator, usersArrayActionCreator,
 } from '../../actionCreators';
+
+import regularForEmail from '../../assets/CheckRegularEmail';
 
 const RegistrationSection = styled.div`
   position: absolute;
@@ -87,26 +91,30 @@ const Registration = () => {
   const [userBirthdate, setUserBirthdate] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [checkEmail, setCheckEmail] = useState(false);
   const usersArray = useSelector(createSelector((state) => state.authorisation.usersArray, (data) => data));
 
   const addUser = (event) => {
     event.preventDefault();
-    /* eslint-disable */
-    const re = /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i;
-    if (re.test(userEmail) && userName && userBirthdate && userPassword) {
-      dispatch(usersArrayActionCreator([ ...usersArray, {
+    if (regularForEmail.test(userEmail) && userName && userBirthdate && userPassword) {
+      dispatch(usersArrayActionCreator([...usersArray, {
         name: userName,
         birthdate: userBirthdate,
         email: userEmail,
         password: userPassword,
         books: [],
-      }]))
+      }]));
       dispatch(showRegistrationActionCreator(false));
       dispatch(showLogInActionCreator(true));
-      navigate("/Authorization/LogIn");
+      navigate('/Authorization/log-in');
     } else {
-      alert('check your data');
+      setCheckEmail(true);
     }
+  };
+
+  const changeEmail = (event) => {
+    setUserEmail(event.target.value);
+    setCheckEmail(false);
   };
 
   return (
@@ -116,8 +124,9 @@ const Registration = () => {
         <H2>Welcome to Fox Library</H2>
         <Username value={userName} onChange={(event) => setUserName(event.target.value)} />
         <Birthdate value={userBirthdate} onChange={(event) => setUserBirthdate(event.target.value)} />
-        <Email value={userEmail} onChange={(event) => setUserEmail(event.target.value)} />
+        <Email value={userEmail} onChange={changeEmail} />
         <Password value={userPassword} onChange={(event) => setUserPassword(event.target.value)} />
+        {checkEmail && <CheckLogPasEmail value="Check your Email" />}
         <Button type="submit" value="Sign up" />
       </Form>
     </RegistrationSection>
